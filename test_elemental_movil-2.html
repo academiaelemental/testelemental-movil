@@ -1633,6 +1633,9 @@ function showResults() {
   document.getElementById('result-nombre').textContent = nombre;
   window.scrollTo({ top: 0, behavior: 'smooth' });
   launchConfetti();
+  // Notify parent of new height after results render
+  setTimeout(sendHeight, 100);
+  setTimeout(sendHeight, 600);
 
   // Send results to Google Sheets
   const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyWGq-x17KLXoqT42zQUWZwO_AdHbAqyle2MVSH31cvqVUfAt6gB9gs8zWVAgk3v9uHOw/exec';
