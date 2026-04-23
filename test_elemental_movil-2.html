@@ -1,0 +1,1688 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test Elemental — Productividad Elemental</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  * { -webkit-tap-highlight-color: transparent; }
+  :root {
+    --cream: #0d0d0d;
+    --warm-white: #111111;
+    --dark: #f0f0f0;
+    --mid: #aaaaaa;
+    --light: #666666;
+    --accent: #E2ED80;
+    --accent-light: #252a10;
+    --fuego: #FFD4A8;
+    --fuego-light: #2a2218;
+    --tierra: #E2ED80;
+    --tierra-light: #252a10;
+    --agua: #ABE6E0;
+    --agua-light: #152a28;
+    --aire: #D4B8E0;
+    --aire-light: #221a2e;
+    --border: #2a2a2a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--cream);
+    color: var(--dark);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* PROGRESS BAR */
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    background: var(--accent);
+    transition: width 0.4s ease;
+    z-index: 100;
+  }
+
+  /* HEADER */
+  header {
+    text-align: center;
+    padding: 60px 24px 40px;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .eyebrow {
+    font-family: 'Poppins', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  header h1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 300;
+    line-height: 1.15;
+    color: var(--dark);
+    margin-bottom: 12px;
+  }
+
+  header h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  header p {
+    font-size: 15px;
+    color: var(--mid);
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  .divider {
+    width: 48px;
+    height: 1px;
+    background: var(--accent);
+    margin: 24px auto;
+  }
+
+  /* INSTRUCTIONS BOX */
+  .instructions {
+    max-width: 680px;
+    margin: 0 auto 48px;
+    padding: 0 24px;
+  }
+
+  .instructions-box {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px 36px;
+  }
+
+  .instructions-box h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 400;
+    margin-bottom: 16px;
+    color: var(--dark);
+  }
+
+  .instructions-box p {
+    font-size: 14px;
+    color: var(--mid);
+    margin-bottom: 10px;
+    line-height: 1.7;
+  }
+
+  .rules {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .rule {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 14px;
+    color: var(--dark);
+  }
+
+  .rule-num {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--accent-light);
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* SECTIONS */
+  .section {
+    max-width: 680px;
+    margin: 0 auto 16px;
+    padding: 0 24px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 8px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-tag {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .section-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--dark);
+    margin-bottom: 4px;
+  }
+
+  .section-subtitle {
+    font-size: 13px;
+    color: var(--mid);
+    font-style: italic;
+  }
+
+  /* QUESTIONS */
+  .questions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+
+  .question-card {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 32px;
+    transition: border-color 0.2s;
+  }
+
+  .question-card.answered {
+    border-color: #444;
+  }
+
+  .question-num {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--light);
+    margin-bottom: 10px;
+  }
+
+  .question-text {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 400;
+    color: var(--dark);
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .option {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    background: #1a1a1a;
+  }
+
+  .option:hover {
+    border-color: #555;
+    background: #1e1e1e;
+  }
+
+  .option.selected {
+    border-color: #555;
+  }
+
+  .option input[type="radio"] {
+    display: none;
+  }
+
+  .option-letter {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--mid);
+    flex-shrink: 0;
+    transition: all 0.18s;
+    margin-top: 1px;
+  }
+
+  .option.selected .option-letter {
+    color: #1a1a1a;
+  }
+
+  .option-text {
+    font-size: 14px;
+    color: var(--dark);
+    line-height: 1.55;
+  }
+
+  /* SECTION 2 special */
+  .section-2 .question-card {
+    border-left: 3px solid var(--border);
+  }
+
+  .section-2 .question-card.answered {
+    border-left-color: var(--accent);
+  }
+
+  /* SUBMIT */
+  .submit-area {
+    max-width: 680px;
+    margin: 0 auto 80px;
+    padding: 0 24px;
+    text-align: center;
+  }
+
+  .progress-text {
+    font-size: 13px;
+    color: var(--mid);
+    margin-bottom: 20px;
+  }
+
+  .progress-count {
+    font-weight: 500;
+    color: var(--accent);
+  }
+
+  .btn-submit {
+    display: inline-block;
+    padding: 16px 48px;
+    background: var(--accent);
+    color: #1a1a1a;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.02em;
+  }
+
+  .btn-submit:hover {
+    background: #c8d960;
+    transform: translateY(-1px);
+  }
+
+  .btn-submit:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  /* RESULTS */
+  #results {
+    display: none;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 60px 24px 80px;
+    animation: fadeIn 0.6s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .results-header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .results-header h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 300;
+    color: var(--dark);
+    margin-bottom: 12px;
+  }
+
+  .results-header p {
+    font-size: 15px;
+    color: var(--mid);
+  }
+
+  /* SCORES */
+  .scores-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+
+  @media (max-width: 480px) {
+    .scores-grid { grid-template-columns: 1fr; }
+  }
+
+  .score-card {
+    border-radius: 16px;
+    padding: 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .score-card.fuego { background: var(--fuego-light); border: 1.5px solid #FFD4A8; }
+  .score-card.tierra { background: var(--tierra-light); border: 1.5px solid #E2ED80; }
+  .score-card.agua { background: var(--agua-light); border: 1.5px solid #ABE6E0; }
+  .score-card.aire { background: var(--aire-light); border: 1.5px solid #D4B8E0; }
+
+  .score-card.dominant {
+    transform: scale(1.02);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+  }
+
+  .score-badge {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 8px;
+    opacity: 0.7;
+  }
+
+  .score-card.fuego .score-badge { color: var(--fuego); }
+  .score-card.tierra .score-badge { color: var(--tierra); }
+  .score-card.agua .score-badge { color: var(--agua); }
+  .score-card.aire .score-badge { color: var(--aire); }
+
+  .score-emoji { font-size: 2rem; margin-bottom: 6px; }
+
+  .score-element {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: #f0f0f0;
+    margin-bottom: 8px;
+  }
+
+  .score-bar-wrap {
+    background: rgba(255,255,255,0.1);
+    border-radius: 50px;
+    height: 8px;
+    overflow: hidden;
+    margin: 10px 0 8px;
+  }
+
+  .score-bar {
+    height: 100%;
+    border-radius: 50px;
+    transition: width 1s ease;
+  }
+
+  .score-card.fuego .score-bar { background: var(--fuego); }
+  .score-card.tierra .score-bar { background: var(--tierra); }
+  .score-card.agua .score-bar { background: var(--agua); }
+  .score-card.aire .score-bar { background: var(--aire); }
+
+  .score-num {
+    font-size: 2rem;
+    font-weight: 300;
+    font-family: 'Poppins', sans-serif;
+    color: #f0f0f0;
+  }
+
+  .score-label {
+    font-size: 12px;
+    color: #888;
+  }
+
+  .dominant-tag, .desarrollo-tag {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 50px;
+    margin-top: 8px;
+    font-weight: 500;
+  }
+
+  .dominant-tag {
+    background: var(--accent);
+    color: #1a1a1a;
+  }
+
+  .desarrollo-tag {
+    background: #333;
+    color: #f0f0f0;
+  }
+
+  /* PROFILE RESULT */
+  .profile-result {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 40px;
+    margin-bottom: 32px;
+    text-align: center;
+  }
+
+  .profile-result h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: var(--mid);
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+  }
+
+  .profile-name {
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 300;
+    color: var(--dark);
+    margin-bottom: 6px;
+  }
+
+  .profile-tagline {
+    font-size: 14px;
+    color: var(--mid);
+    font-style: italic;
+    margin-bottom: 24px;
+  }
+
+  .profile-desc-label {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+
+  .profile-desc-text {
+    font-size: 14px;
+    color: #cccccc;
+    line-height: 1.75;
+  }
+
+  .profile-desc-section {
+    padding: 20px;
+    background: #1a1a1a;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+  }
+
+  .profile-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    text-align: left;
+  }
+
+  @media (max-width: 480px) {
+    .profile-fields { grid-template-columns: 1fr; }
+  }
+
+  .profile-field {
+    padding: 16px 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: #1a1a1a;
+  }
+
+  .field-label {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #666;
+    margin-bottom: 6px;
+  }
+
+  .field-value {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: var(--accent);
+  }
+
+  /* RANGES TABLE */
+  .ranges-box {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 32px;
+    margin-bottom: 32px;
+  }
+
+  .ranges-box h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: var(--dark);
+    margin-bottom: 20px;
+  }
+
+  .ranges-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  .ranges-table th {
+    text-align: left;
+    padding: 8px 12px;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--light);
+    border-bottom: 1px solid var(--border);
+    font-weight: 500;
+  }
+
+  .ranges-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    color: var(--dark);
+    vertical-align: top;
+  }
+
+  .ranges-table tr:last-child td { border-bottom: none; }
+
+  .range-score {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 400;
+    white-space: nowrap;
+  }
+
+  /* NOTE */
+  .note-box {
+    border-left: 3px solid var(--accent);
+    padding: 20px 24px;
+    background: #1a1f0a;
+    border-radius: 0 12px 12px 0;
+    margin-bottom: 40px;
+  }
+
+  .note-box p {
+    font-size: 14px;
+    color: #cccccc;
+    line-height: 1.7;
+  }
+
+  .note-box p + p { margin-top: 10px; }
+
+  /* RESTART */
+  .btn-restart {
+    display: inline-block;
+    padding: 12px 36px;
+    background: transparent;
+    color: var(--mid);
+    border: 1.5px solid var(--border);
+    border-radius: 50px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 8px;
+  }
+
+  .btn-restart:hover {
+    border-color: var(--dark);
+    color: var(--dark);
+  }
+
+  /* Error */
+  .error-msg {
+    color: #C0392B;
+    font-size: 13px;
+    margin-top: 12px;
+    display: none;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--cream); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* FORM FIELDS */
+  .form-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .form-label {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .form-input {
+    background: #1a1a1a;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    color: #f0f0f0;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+
+  .form-input::placeholder {
+    color: #555;
+  }
+
+  .form-input:focus {
+    border-color: var(--accent);
+  }
+
+  /* ONE AT A TIME NAVIGATION */
+  .step { display: none; }
+  .step.active { display: block; animation: fadeSlide 0.35s ease; }
+
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 680px;
+    margin: 32px auto 60px;
+    padding: 0 24px;
+    gap: 12px;
+  }
+
+  .btn-prev {
+    padding: 12px 28px;
+    background: transparent;
+    color: var(--mid);
+    border: 1.5px solid var(--border);
+    border-radius: 50px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-prev:hover { border-color: var(--accent); color: var(--accent); }
+
+  .btn-next {
+    padding: 13px 36px;
+    background: var(--accent);
+    color: #1a1a1a;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-next:hover { background: #c8d960; transform: translateY(-1px); }
+  .btn-next:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+  .btn-next.finish {
+    background: #D4B8E0;
+    color: #1a1a1a;
+    font-size: 15px;
+    padding: 15px 40px;
+    box-shadow: 0 4px 20px rgba(212,184,224,0.4);
+    animation: pulseLila 1.8s ease-in-out infinite;
+  }
+
+  .btn-next.finish:hover {
+    background: #c4a0d8;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 28px rgba(212,184,224,0.5);
+  }
+
+  @keyframes pulseLila {
+    0%, 100% { box-shadow: 0 4px 20px rgba(212,184,224,0.4); }
+    50% { box-shadow: 0 4px 32px rgba(212,184,224,0.7); }
+  }
+
+  /* CONFETTI */
+  .confetti-piece {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    top: -10px;
+    border-radius: 2px;
+    animation: confettiFall linear forwards;
+    z-index: 9999;
+    pointer-events: none;
+  }
+
+  @keyframes confettiFall {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  }
+
+  .step-counter {
+    font-size: 12px;
+    color: var(--mid);
+    text-align: center;
+    margin-bottom: 6px;
+    letter-spacing: 0.05em;
+  }
+
+  .single-question {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .section-divider {
+    max-width: 680px;
+    margin: 0 auto 24px;
+    padding: 0 24px;
+  }
+
+  .section-divider-box {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px 32px;
+    text-align: center;
+  }
+
+  .error-select {
+    color: #C0392B;
+    font-size: 13px;
+    margin-top: 10px;
+    display: none;
+    text-align: center;
+  }
+
+  /* ── MOBILE OPTIMIZATIONS ─────────────────────────── */
+  @media (max-width: 600px) {
+
+    body { font-size: 15px; }
+
+    /* Progress bar thicker on mobile */
+    .progress-bar { height: 4px; }
+
+    /* Instructions box */
+    .instructions { padding: 0 14px; margin-bottom: 20px; }
+    .instructions-box { padding: 22px 18px; border-radius: 14px; }
+    .instructions-box h3 { font-size: 1.1rem; margin-bottom: 12px; }
+    .instructions-box p { font-size: 13.5px; line-height: 1.65; }
+
+    /* Rules */
+    .rule { font-size: 13px; gap: 10px; }
+    .rule-num { width: 22px; height: 22px; font-size: 11px; flex-shrink: 0; }
+
+    /* Section headers */
+    .section { padding: 0 14px; }
+    .section-title { font-size: 1.2rem; }
+    .section-subtitle { font-size: 12px; }
+    .section-tag { font-size: 10px; }
+
+    /* Single question */
+    .single-question { padding: 0 14px; }
+    .question-card { padding: 20px 16px; border-radius: 14px; }
+    .question-num { font-size: 11px; margin-bottom: 8px; }
+    .question-text { font-size: 1rem; margin-bottom: 16px; line-height: 1.45; }
+
+    /* Options */
+    .options { gap: 8px; }
+    .option { padding: 12px 14px; border-radius: 10px; gap: 10px; }
+    .option-letter { width: 24px; height: 24px; font-size: 11px; flex-shrink: 0; }
+    .option-text { font-size: 13px; line-height: 1.5; }
+
+    /* Nav buttons */
+    .nav-buttons {
+      margin: 20px auto 40px;
+      padding: 0 14px;
+    }
+    .btn-prev { padding: 10px 18px; font-size: 13px; }
+    .btn-next { padding: 12px 24px; font-size: 13px; }
+    .btn-next.finish { padding: 13px 22px; font-size: 13.5px; }
+    .step-counter { font-size: 11px; }
+
+    /* Form fields */
+    .form-fields { gap: 12px; }
+    .form-input { font-size: 13px; padding: 11px 14px; }
+    .form-label { font-size: 10px; }
+
+    /* WhatsApp row */
+    #field-prefijo { font-size: 12px; padding: 11px 8px; }
+
+    /* Results */
+    #results { padding: 36px 14px 60px; }
+    .results-header h2 { font-size: 1.8rem; }
+    .results-header p { font-size: 13.5px; }
+    #result-nombre { font-size: 1.15rem !important; }
+
+    .scores-grid { grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
+    .score-card { padding: 16px 12px; border-radius: 14px; }
+    .score-emoji { font-size: 1.5rem; }
+    .score-element { font-size: 1.1rem; }
+    .score-num { font-size: 1.6rem; }
+    .score-label { font-size: 11px; }
+    .score-badge { font-size: 10px; }
+    .dominant-tag, .desarrollo-tag { font-size: 9px; padding: 2px 8px; }
+
+    .profile-result { padding: 24px 18px; border-radius: 16px; }
+    .profile-name { font-size: 1.6rem !important; }
+    .profile-tagline { font-size: 13px; }
+    .profile-fields { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .profile-field { padding: 12px 14px; }
+    .field-label { font-size: 10px; }
+    .field-value { font-size: 1.1rem; }
+
+    .profile-desc-section { padding: 16px 14px; }
+    .profile-desc-label { font-size: 10px; }
+    .profile-desc-text { font-size: 13px; line-height: 1.7; }
+
+    .ranges-box { padding: 20px 16px; border-radius: 14px; }
+    .ranges-box h3 { font-size: 1rem; margin-bottom: 14px; }
+    .ranges-table { font-size: 12px; }
+    .ranges-table th { font-size: 10px; padding: 6px 10px; }
+    .ranges-table td { padding: 8px 10px; }
+    .range-score { font-size: 1rem; }
+
+    .note-box { padding: 16px 16px; }
+    .note-box p { font-size: 13px; }
+
+    .btn-restart { font-size: 13px; padding: 10px 28px; }
+
+    /* Section divider */
+    .section-divider { padding: 0 14px; margin-bottom: 16px; }
+    .section-divider-box { padding: 18px 16px; border-radius: 14px; }
+
+    /* Divider line */
+    .divider { margin: 16px auto; }
+  }
+
+  /* Extra small screens */
+  @media (max-width: 380px) {
+    .question-text { font-size: 0.95rem; }
+    .option-text { font-size: 12.5px; }
+    .scores-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .profile-fields { grid-template-columns: 1fr; }
+    .btn-next.finish { font-size: 12.5px; padding: 12px 18px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar" style="width:0%"></div>
+
+<div id="testForm">
+  <div style="height:32px"></div>
+
+  <!-- STEP 0: DATOS PERSONALES -->
+  <div class="step active" id="step-0">
+    <div class="instructions">
+      <div class="instructions-box">
+        <h3>✨ Antes de empezar</h3>
+        <p style="margin-bottom:20px;">Para comenzar ingresa tus datos personales 🧡</p>
+        <div class="form-fields">
+          <div class="form-field">
+            <label class="form-label">Nombre completo</label>
+            <input type="text" id="field-nombre" class="form-input" placeholder="¿Cómo te llamas?">
+          </div>
+          <div class="form-field">
+            <label class="form-label">Correo electrónico</label>
+            <input type="email" id="field-correo" class="form-input" placeholder="tu@correo.com">
+          </div>
+          <div class="form-field">
+            <label class="form-label">WhatsApp</label>
+            <div style="display:flex; gap:8px;">
+              <select id="field-prefijo" class="form-input" style="width:auto; flex-shrink:0; padding-right:8px;">
+                <option value="+57">🇨🇴 +57</option>
+                <option value="+54">🇦🇷 +54</option>
+                <option value="+52">🇲🇽 +52</option>
+                <option value="+51">🇵🇪 +51</option>
+                <option value="+56">🇨🇱 +56</option>
+                <option value="+58">🇻🇪 +58</option>
+                <option value="+593">🇪🇨 +593</option>
+                <option value="+591">🇧🇴 +591</option>
+                <option value="+595">🇵🇾 +595</option>
+                <option value="+598">🇺🇾 +598</option>
+                <option value="+503">🇸🇻 +503</option>
+                <option value="+502">🇬🇹 +502</option>
+                <option value="+504">🇭🇳 +504</option>
+                <option value="+505">🇳🇮 +505</option>
+                <option value="+506">🇨🇷 +506</option>
+                <option value="+507">🇵🇦 +507</option>
+                <option value="+1">🇺🇸 +1</option>
+                <option value="+34">🇪🇸 +34</option>
+                <option value="+55">🇧🇷 +55</option>
+                <option value="+44">🇬🇧 +44</option>
+              </select>
+              <input type="tel" id="field-whatsapp" class="form-input" placeholder="300 123 4567" style="flex:1;">
+            </div>
+          </div>
+        </div>
+        <div class="error-msg" id="errorDatos" style="display:none; margin-top:12px;">Por favor completa todos tus datos antes de continuar.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 1: INSTRUCCIONES -->
+  <div class="step" id="step-1">
+    <div class="instructions">
+      <div class="instructions-box">
+        <h3>📋 Cómo funciona</h3>
+        <p>Este test tiene dos partes. La <strong>primera parte</strong> tiene 10 preguntas sobre tus fortalezas naturales, es decir cómo funcionas en tu luz.</p>
+        <p>La <strong>segunda parte</strong> tiene 10 preguntas sobre tus sombras, es decir, los patrones que aparecen cuando tu energía está en exceso o en desequilibrio.</p>
+        <div class="rules">
+          <div class="rule"><div class="rule-num">1</div><span>Elige según cómo eres hoy, no desde lo que quisieras ser</span></div>
+          <div class="rule"><div class="rule-num">2</div><span>Si dudas entre dos opciones, quédate con la que primero se te vino a la mente</span></div>
+          <div class="rule"><div class="rule-num">3</div><span>No hay respuestas correctas ni incorrectas — todas las energías son válidas</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEPS 2-21: PREGUNTAS (generadas por JS) -->
+  <div id="questionsContainer"></div>
+
+  <!-- NAV BUTTONS -->
+  <div class="nav-buttons">
+    <button class="btn-prev" id="btnPrev" onclick="navigate(-1)" style="visibility:hidden">← Anterior</button>
+    <div style="text-align:center">
+      <div class="step-counter" id="stepCounter"></div>
+    </div>
+    <button class="btn-next" id="btnNext" onclick="navigate(1)">Siguiente →</button>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div id="results">
+  <div class="results-header">
+    <div class="eyebrow">Tu resultado</div>
+    <h2>Tu Perfil <em style="font-style:italic; color:var(--accent)">Elemental</em></h2>
+    <div class="divider"></div>
+    <p>Perfil Elemental listo para:</p>
+    <p id="result-nombre" style="font-family:'Poppins',sans-serif; font-size:1.4rem; font-weight:600; color:var(--accent); margin-top:6px;"></p>
+  </div>
+
+  <div class="scores-grid" id="scoresGrid"></div>
+  <div class="profile-result" id="profileResult"></div>
+
+  <div class="ranges-box">
+    <h3>Rangos de referencia</h3>
+    <table class="ranges-table">
+      <thead>
+        <tr><th>Puntaje</th><th>Qué significa</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="range-score">12 o más</td><td>Energía muy dominante — define fuertemente tu forma de operar</td></tr>
+        <tr><td class="range-score">7 a 11</td><td>Energía presente y activa</td></tr>
+        <tr><td class="range-score">4 a 6</td><td>Energía de apoyo — aparece en contextos específicos</td></tr>
+        <tr><td class="range-score">0 a 3</td><td>Zona de desarrollo — energía poco habitada, área de crecimiento real</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note-box">
+    <p>Tu elemento dominante no es una etiqueta, es un punto de partida. No significa que solo puedes operar desde esa energía, significa que es tu base natural, desde donde más fluyes, más rindes y más te reconoces.</p>
+    <p>Tu zona de desarrollo tampoco es una debilidad, es una invitación. La energía que menos habitas suele ser exactamente la que necesitas para superar los bloqueos que más se repiten en tu vida. ✨</p>
+  </div>
+
+  <div style="text-align:center">
+    <button class="btn-restart" onclick="restart()">Volver a empezar</button>
+  </div>
+</div>
+
+<script>
+const questions = [
+  // PARTE 1
+  {
+    num: 1, emoji: "🚀",
+    text: "Cuando tienes un objetivo claro, ¿cómo arrancas?",
+    options: [
+      { letter: "A", text: "Arranco sola y rápido: la acción me genera más claridad que la planificación." },
+      { letter: "B", text: "Me tomo el tiempo de organizar bien antes de empezar, el orden me da seguridad." },
+      { letter: "C", text: "Necesito conectar emocionalmente antes de moverme, el para qué me activa." },
+      { letter: "D", text: "Empiezo explorando y generando ideas, el proceso de pensar me orienta." }
+    ]
+  },
+  {
+    num: 2, emoji: "💪",
+    text: "¿Cuál es tu mayor fortaleza a la hora de trabajar?",
+    options: [
+      { letter: "A", text: "La capacidad de tomar acción aunque no tenga todo resuelto." },
+      { letter: "B", text: "La responsabilidad, cuando me comprometo, cumplo sin importar las circunstancias." },
+      { letter: "C", text: "Mi entrega total, cuando algo me importa, me entrego demasiado." },
+      { letter: "D", text: "La creatividad, veo conexiones y posibilidades que otros no ven fácilmente." }
+    ]
+  },
+  {
+    num: 3, emoji: "🧭",
+    text: "¿Cómo tomas decisiones importantes?",
+    options: [
+      { letter: "A", text: "Confío en mi instinto y decido rápido, la indecisión me agota más que equivocarme." },
+      { letter: "B", text: "Necesito información completa y tiempo para analizar bien antes de moverme." },
+      { letter: "C", text: "Escucho lo que siento, si algo no resuena internamente conmigo, no lo hago." },
+      { letter: "D", text: "Investigo, comparo opciones y conecto ideas hasta que algo tenga sentido para mí." }
+    ]
+  },
+  {
+    num: 4, emoji: "🏆",
+    text: "Cuando lograste algo importante, ¿qué frase describe mejor lo que sentiste?",
+    options: [
+      { letter: "A", text: "\"Lo hice. Ahora ¿qué sigue?\", el logro me activa para lo próximo." },
+      { letter: "B", text: "\"Lo hice, pero pude haberlo hecho mejor.\"" },
+      { letter: "C", text: "\"¡Es momento de celebrar y descansar!\"" },
+      { letter: "D", text: "\"Aprendí mucho, ya sé cómo hacerlo diferente la próxima vez.\" El aprendizaje es el premio." }
+    ]
+  },
+  {
+    num: 5, emoji: "✨",
+    text: "¿Qué describe mejor tu estilo natural de influencia?",
+    options: [
+      { letter: "A", text: "Inspiro con energía y acción, lidero desde el ejemplo y el movimiento." },
+      { letter: "B", text: "Genero confianza, las personas saben que pueden contar conmigo." },
+      { letter: "C", text: "Conecto emocionalmente, las personas sienten que las veo y las comprendo." },
+      { letter: "D", text: "Aporto ideas y visión, ayudo a ver lo que todavía no existe." }
+    ]
+  },
+  {
+    num: 6, emoji: "⚡",
+    text: "Cuando trabajas en algo que realmente te apasiona, ¿cómo es tu energía?",
+    options: [
+      { letter: "A", text: "Intensa: puedo trabajar horas sin parar cuando algo me enciende (sin darme cuenta del tiempo)." },
+      { letter: "B", text: "Constante y sostenida: avanzo con ritmo parejo sin necesitar picos de emoción." },
+      { letter: "C", text: "Fluida y profunda: entro en un estado de flow que conecta mente y emoción." },
+      { letter: "D", text: "Dispersa y expansiva: salto entre ideas y ángulos porque todo me parece interesante." }
+    ]
+  },
+  {
+    num: 7, emoji: "🤝",
+    text: "¿Cuál es tu mayor fortaleza en un equipo o proyecto colaborativo?",
+    options: [
+      { letter: "A", text: "Pongo en movimiento lo que otros están pensando, soy quien da el primer paso." },
+      { letter: "B", text: "Sostengo la estructura, me aseguro de que las cosas se hagan como se acordaron." },
+      { letter: "C", text: "Cuido el clima emocional, noto cuando algo no está bien antes de que se diga." },
+      { letter: "D", text: "Genero las ideas que nadie había pensado, conectar conceptos distintos es natural en mí." }
+    ]
+  },
+  {
+    num: 8, emoji: "🌀",
+    text: "¿Cómo describes tu relación con los cambios inesperados?",
+    options: [
+      { letter: "A", text: "Me adapto rápido, los cambios no me frenan, me activan." },
+      { letter: "B", text: "Los proceso con calma si tengo tiempo, prefiero los cambios planificados." },
+      { letter: "C", text: "Depende del impacto emocional, si el cambio afecta algo importante, necesito procesarlo." },
+      { letter: "D", text: "Los veo como oportunidades, un cambio puede abrir algo mejor de lo que había." }
+    ]
+  },
+  {
+    num: 9, emoji: "📚",
+    text: "Cuando tienes que aprender algo nuevo, ¿cómo lo haces mejor?",
+    options: [
+      { letter: "A", text: "Haciéndolo directamente: aprendo en acción, no estudiando en abstracto." },
+      { letter: "B", text: "Con instrucciones claras y paso a paso: necesito saber exactamente qué hacer." },
+      { letter: "C", text: "Desde la experiencia y la conexión: aprendo mejor cuando hay significado personal." },
+      { letter: "D", text: "Explorando y conectando: me gusta entender el contexto y explorar sin estructura." }
+    ]
+  },
+  {
+    num: 10, emoji: "🔋",
+    text: "¿Qué frase describe mejor cómo usas tu energía a lo largo del día?",
+    options: [
+      { letter: "A", text: "La uso al máximo cuando estoy activada, prefiero intensidad sobre constancia." },
+      { letter: "B", text: "La administro con cuidado, un ritmo constante me rinde más que los extremos." },
+      { letter: "C", text: "La cuido según cómo me siento: mi estado interno define cuánto puedo dar." },
+      { letter: "D", text: "Varía según el estímulo, lo nuevo me activa, lo repetitivo me apaga rápido." }
+    ]
+  },
+  // PARTE 2
+  {
+    num: 11, emoji: "🌪️",
+    text: "Cuando estás bajo presión, ¿cuál de estos patrones aparece más en ti?",
+    options: [
+      { letter: "A", text: "Me vuelvo impulsiva: tomo decisiones apresuradas o digo cosas que después lamento." },
+      { letter: "B", text: "Me paralizo: necesito tenerlo todo bajo control y si no puedo, no me muevo." },
+      { letter: "C", text: "Me derrumbo emocionalmente: un comentario o una situación difícil puede tumbar mi día." },
+      { letter: "D", text: "Me disperso: abro mil pestañas mentales y no puedo cerrar ninguna." }
+    ]
+  },
+  {
+    num: 12, emoji: "💭",
+    text: "¿Cuál de estos reproches te has hecho a ti misma con más frecuencia?",
+    options: [
+      { letter: "A", text: "\"Empecé demasiadas cosas y no terminé ninguna.\"" },
+      { letter: "B", text: "\"Sé que está bien pero no perfecto: siempre le encuentro algo más que puede mejorar.\"" },
+      { letter: "C", text: "\"Debería haber actuado antes en lugar de esperar a sentirme lista.\"" },
+      { letter: "D", text: "\"Llevo semanas planeando esto y todavía no empecé a ejecutar.\"" }
+    ]
+  },
+  {
+    num: 13, emoji: "😤",
+    text: "Cuando algo no sale como esperabas, ¿cuál es tu reacción más automática?",
+    options: [
+      { letter: "A", text: "Exploto o reacciono con más intensidad de la que la situación merece." },
+      { letter: "B", text: "Me cierro: me cuesta recibir feedback o aceptar que algo salió mal." },
+      { letter: "C", text: "Me hundo: lo tomo de forma muy personal aunque no haya sido para mí." },
+      { letter: "D", text: "Salto a la siguiente idea en lugar de procesar lo que pasó." }
+    ]
+  },
+  {
+    num: 14, emoji: "🚧",
+    text: "¿Cuál de estas situaciones te genera más resistencia?",
+    options: [
+      { letter: "A", text: "Hacer tareas repetitivas, administrativas o que no me desafían." },
+      { letter: "B", text: "Lanzar algo sin estar completamente segura de que está perfecto." },
+      { letter: "C", text: "Actuar cuando no me siento emocionalmente lista o bien internamente." },
+      { letter: "D", text: "Ejecutar una tarea de forma lineal y sostenida sin poder explorar otras direcciones." }
+    ]
+  },
+  {
+    num: 15, emoji: "👥",
+    text: "En tus relaciones de trabajo o colaboración, ¿cuál de estos patrones reconoces en ti?",
+    options: [
+      { letter: "A", text: "Tiendo a imponer mi ritmo o mis decisiones sin consultar suficiente a otros." },
+      { letter: "B", text: "Me cuesta delegar: prefiero hacerlo yo misma para asegurarme de que quede bien." },
+      { letter: "C", text: "A veces priorizo las necesidades de otros sobre las mías hasta agotarme." },
+      { letter: "D", text: "Me entusiasmo con proyectos nuevos pero pierdo el interés cuando dejan de ser estimulantes." }
+    ]
+  },
+  {
+    num: 16, emoji: "🔁",
+    text: "¿Cuál de estos pensamientos aparece más seguido en tu cabeza?",
+    options: [
+      { letter: "A", text: "\"Tengo que hacer más, lograr más, moverme más rápido.\"" },
+      { letter: "B", text: "\"Todavía no está listo. Necesita un poco más de trabajo.\"" },
+      { letter: "C", text: "\"No sé si estoy lista para esto. ¿Y si no sale bien?\"" },
+      { letter: "D", text: "\"Hay una forma mejor de hacer esto, solo necesito pensarlo un poco más.\"" }
+    ]
+  },
+  {
+    num: 17, emoji: "🪫",
+    text: "Cuando tu energía está agotada, ¿cómo se ve eso en tu productividad?",
+    options: [
+      { letter: "A", text: "Sigo forzándome a avanzar aunque el cuerpo ya no da, no sé cuándo parar." },
+      { letter: "B", text: "Me quedo inmóvil: el agotamiento me paraliza completamente y no puedo moverme." },
+      { letter: "C", text: "Desaparezco emocionalmente: me desconecto de todo y de todos hasta recuperarme." },
+      { letter: "D", text: "Salto de tarea en tarea sin profundizar en ninguna: mucho movimiento, poco avance." }
+    ]
+  },
+  {
+    num: 18, emoji: "🪞",
+    text: "¿Cuál de estas sombras reconoces como tu patrón más recurrente?",
+    options: [
+      { letter: "A", text: "El exceso de actividad: hago tanto que a veces no sé para qué estoy corriendo." },
+      { letter: "B", text: "El exceso de control: me cuesta confiar en que algo puede salir bien sin mi supervisión." },
+      { letter: "C", text: "El exceso de sensibilidad: las emociones a veces pesan más de lo que me gustaría." },
+      { letter: "D", text: "El exceso de ideas: genero tanto que me cuesta aterrizar y ejecutar algo concreto." }
+    ]
+  },
+  {
+    num: 19, emoji: "⏳",
+    text: "En los momentos en que más has procrastinado, ¿cuál fue el patrón dominante?",
+    options: [
+      { letter: "A", text: "Empecé algo nuevo en lugar de terminar lo que tenía pendiente." },
+      { letter: "B", text: "Seguí revisando y mejorando algo que ya estaba listo para salir." },
+      { letter: "C", text: "Esperé a sentirme en el estado emocional correcto (que nunca llegó)." },
+      { letter: "D", text: "Seguí investigando y planeando en lugar de empezar a ejecutar." }
+    ]
+  },
+  {
+    num: 20, emoji: "🎯",
+    text: "¿Cuál de estas frases describe mejor tu mayor desafío productivo actual?",
+    options: [
+      { letter: "A", text: "Sostener el ritmo en lo rutinario y terminar lo que empiezo." },
+      { letter: "B", text: "Soltar el control y avanzar aunque no tenga todo perfectamente claro." },
+      { letter: "C", text: "Actuar cuando hay una emoción incómoda o cuando no me siento lista." },
+      { letter: "D", text: "Cerrar el ciclo de planificación y pasar a la ejecución concreta." }
+    ]
+  }
+
+];
+
+const profiles = {
+  A: {
+    emoji: "🔥",
+    name: "Fuego",
+    cls: "fuego",
+    tagline: "La mujer que enciende lo que otros solo imaginan",
+    dominantDesc: "Eres la mujer que actúa. Mientras otras están pensando si es el momento correcto, tú ya empezaste. Esa reunión que nadie quería organizar, ese proyecto que llevaba meses parado, esa idea que todas tenían miedo de proponer... fuiste tú quien dijo 'bueno, lo hago yo'. Tu energía es real, tu impulso es genuino y tu capacidad de arrancar sin esperar permiso es uno de los superpoderes más valiosos que existen. Tu reto más grande no es encender el fuego, sino aprender a sostenerlo sin quemarte. Terminar lo que empezaste, bajar el ritmo cuando el cuerpo lo pide y recordar que no todo tiene que pasar ya.",
+    desarrolloDesc: {
+      B: "Tu zona de desarrollo es la energía Tierra, y probablemente ya la sientes cuando miras esa lista de proyectos a medias que llevas cargando hace meses. La Tierra no te pide que frenes, te pide que aterrices. Que elijas uno solo y lo lleves hasta el final. Imagínate terminar algo, cerrarlo, publicarlo, enviarlo, y sentir esa satisfacción que solo da el cierre real. Eso es lo que la Tierra tiene para ti.",
+      C: "Tu zona de desarrollo es la energía Agua, y probablemente la sientes cuando te das cuenta de que llevas semanas corriendo sin saber muy bien para qué. El Agua no te pide que pares, te pide que te preguntes hacia dónde vas. Antes de lanzarte al siguiente proyecto, siéntate un momento y pregúntate si realmente lo quieres, o si solo te activa porque es nuevo. Esa pregunta puede ahorrarte meses de energía mal gastada.",
+      D: "Tu zona de desarrollo es la energía Aire, y probablemente la sientes cuando tomas una decisión rápida y después te das cuenta de que había una opción mejor que no viste. El Aire no te pide que dudes más, te pide que te des unos minutos para mirar el panorama completo antes de lanzarte. A veces la mejor acción es la que viene después de una pausa corta y bien usada."
+    }
+  },
+  B: {
+    emoji: "🌱",
+    name: "Tierra",
+    cls: "tierra",
+    tagline: "La mujer que construye para quedarse",
+    dominantDesc: "Eres la mujer que sostiene. Cuando dices que vas a hacer algo, lo haces, aunque no tengas ganas, aunque el día esté difícil, aunque nadie te esté mirando. Esa constancia tuya que parece tan natural es en realidad una de las fortalezas más escasas y más valiosas que existen. Las personas confían en ti porque saben que lo que prometiste va a estar. Tu trabajo tiene solidez, tus proyectos tienen estructura y lo que construyes dura. Tu reto más grande es aprender a soltar el control antes de tenerlo todo perfectamente claro, moverte aunque los pasos no estén todos definidos y confiar en que puedes sostener lo incierto sin desmoronarte.",
+    desarrolloDesc: {
+      A: "Tu zona de desarrollo es la energía Fuego, y probablemente la sientes cuando llevas semanas diciéndote que 'la semana que viene empiezas' ese proyecto que sabes que quieres hacer. El Fuego no te pide que te lances sin pensar, te pide que elijas una fecha y que arranques aunque no tengas todo resuelto. Imagínate enviar esa primera versión imperfecta, ese borrador, esa propuesta preliminar, y descubrir que el mundo no se acaba. Eso es lo que el Fuego tiene para ti.",
+      C: "Tu zona de desarrollo es la energía Agua, y probablemente la sientes cuando te das cuenta de que llevas tanto tiempo enfocada en ejecutar que olvidaste conectar con el para qué de lo que estás haciendo. El Agua no te pide que dejes de producir, te pide que de vez en cuando pares y sientas. Que le preguntes a tu cuerpo cómo está, que te permitas un momento sin agenda, que reconectes con el significado de lo que estás construyendo.",
+      D: "Tu zona de desarrollo es la energía Aire, y probablemente la sientes cuando alguien te propone hacer algo de una forma diferente a como siempre lo has hecho y tu primer instinto es resistirte. El Aire no te pide que abandones tu orden, te pide que le abras la puerta a lo nuevo aunque no sepas exactamente a dónde lleva. A veces la mejor estructura es la que todavía no inventaste."
+    }
+  },
+  C: {
+    emoji: "🌊",
+    name: "Agua",
+    cls: "agua",
+    tagline: "La mujer que siente profundo y crea desde adentro",
+    dominantDesc: "Eres la mujer que siente, y no de forma superficial sino profunda y real. Cuando creas algo desde ese lugar tuyo, el trabajo tiene una calidad que va más allá de la técnica, tiene alma, y las personas lo sienten aunque no puedan explicar exactamente por qué. Tu empatía es genuina, tu intuición es poderosa y tu capacidad de entregarte completamente a lo que te importa produce resultados que el trabajo apresurado nunca puede alcanzar. Tu reto más grande es aprender a moverte aunque el agua no esté en calma. Actuar antes de sentirte lista, confiar en ti misma sin esperar la condición emocional perfecta y soltar la idea de que primero tienes que 'estar bien' para poder hacer algo bien.",
+    desarrolloDesc: {
+      A: "Tu zona de desarrollo es la energía Fuego, y probablemente la sientes en esos momentos en que llevas días 'casi lista para empezar' pero algo siempre falta para que el momento sea el correcto. El Fuego no te pide que ignores lo que sientes, te pide que empieces de todas formas. Imagínate abrir el documento, grabar el primer video, enviar el primer mensaje, sin esperar a sentirte lista. Muchas veces el estado emocional que necesitas no llega antes de empezar, llega después.",
+      B: "Tu zona de desarrollo es la energía Tierra, y probablemente la sientes cuando tienes una idea hermosa en la cabeza que lleva meses ahí pero nunca termina de aterrizarse en algo concreto. La Tierra no te pide que pierdas tu esencia creativa, te pide que le des una forma, una fecha, un primer paso específico. Imagínate crear una rutina pequeña y sostenible que le dé estructura a tu proceso sin apagarlo. Eso es lo que la Tierra tiene para ti.",
+      D: "Tu zona de desarrollo es la energía Aire, y probablemente la sientes cuando algo te afecta emocionalmente y te cuesta ver la situación desde afuera sin cargarte con todo el peso. El Aire no te pide que dejes de sentir, te pide que de vez en cuando te subas a un balcón imaginario y mires lo que está pasando desde un poco más arriba. Esa distancia no te desconecta, te da perspectiva para actuar mejor."
+    }
+  },
+  D: {
+    emoji: "🌬",
+    name: "Aire",
+    cls: "aire",
+    tagline: "La mujer que ve lo que todavía no existe",
+    dominantDesc: "Eres la mujer que piensa, y no de forma lineal sino expansiva, conectando ideas que para otros no tienen nada que ver y encontrando el ángulo que nadie había visto. En una reunión eres la que dice la idea que cambia toda la conversación. Frente a un problema eres la que pregunta '¿y si lo hacemos diferente?' Tu mente es un recurso extraordinario y tu capacidad de imaginar lo que todavía no existe es el primer paso de cualquier creación relevante. Tu reto más grande es aterrizar esas posibilidades en algo concreto, real y terminado. Cerrar ciclos, ejecutar de forma sostenida aunque ya no sea nuevo y aprender que ejecutar no mata la creatividad, la alimenta.",
+    desarrolloDesc: {
+      A: "Tu zona de desarrollo es la energía Fuego, y probablemente la sientes cuando llevas semanas preparando ese proyecto y todavía no lo has lanzado porque 'todavía le falta algo'. El Fuego no te pide que lances algo malo, te pide que lances la versión 1. Imagínate publicar algo imperfecto y descubrir que el feedback real que recibes vale más que otras semanas de planificación. Eso es lo que el Fuego tiene para ti.",
+      B: "Tu zona de desarrollo es la energía Tierra, y probablemente la sientes cuando miras tu lista de proyectos abiertos y te cuesta recordar cuántos empezaste con todo el entusiasmo del mundo y siguen ahí, a medias, esperando. La Tierra no te pide que dejes de generar ideas, te pide que elijas una y la lleves hasta el final antes de abrir otra. Imagínate la sensación de cerrar algo, de verdad, de principio a fin. Eso construye una identidad que ninguna idea nueva puede darte.",
+      C: "Tu zona de desarrollo es la energía Agua, y probablemente la sientes cuando te das cuenta de que llevas mucho tiempo generando y pensando pero sin conectar con el para qué real de todo eso. El Agua no te pide que pares la mente, te pide que de vez en cuando bajes de la cabeza al corazón y preguntes si lo que estás haciendo todavía te importa de verdad. Esa conexión es lo que hace que el trabajo trascienda."
+    }
+  }
+};
+
+let answers = {};
+let currentStep = 0;
+// Steps: 0=datos, 1=instrucciones, 2-21=preguntas(1-20)
+const TOTAL_STEPS = 22; // 0,1, + 20 questions
+
+function buildQuestionSteps() {
+  const container = document.getElementById('questionsContainer');
+  questions.forEach((q, idx) => {
+    const stepNum = idx + 2;
+    const colorIdx = idx % 4;
+    const div = document.createElement('div');
+    div.className = 'step';
+    div.id = 'step-' + stepNum;
+
+    // Section divider before question 11
+    let dividerHTML = '';
+    if (idx === 10) {
+      dividerHTML = `
+        <div class="section-divider">
+          <div class="section-divider-box">
+            <div class="section-tag" style="color:var(--accent); font-size:11px; letter-spacing:0.15em; text-transform:uppercase; font-weight:500; margin-bottom:8px;">Parte 2 — Preguntas 11 a 20</div>
+            <div style="font-family:'Poppins',sans-serif; font-size:1.2rem; color:#f0f0f0; margin-bottom:4px;">🌑 Tus Sombras</div>
+            <div style="font-size:13px; color:#888; font-style:italic;">¿Qué patrones aparecen cuando tu energía está en exceso?</div>
+          </div>
+        </div>`;
+    }
+
+    // Shuffle options visually, relabel A B C D in order, keep original letter for scoring
+    const displayLabels = ['A', 'B', 'C', 'D'];
+    const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
+
+    const optionsHTML = shuffledOptions.map((opt, i) => `
+      <label class="option" id="opt-${q.num}-${opt.letter}"
+        onclick="selectOption(${q.num}, '${opt.letter}')"
+        onmouseenter="hoverOption(${q.num}, '${opt.letter}', true)"
+        onmouseleave="hoverOption(${q.num}, '${opt.letter}', false)">
+        <input type="radio" name="q${q.num}" value="${opt.letter}">
+        <div class="option-letter">${displayLabels[i]}</div>
+        <div class="option-text">${opt.text}</div>
+      </label>
+    `).join('');
+
+    div.innerHTML = `
+      ${dividerHTML}
+      <div class="single-question">
+        <div class="question-card" id="card-${q.num}" data-color-idx="${colorIdx}">
+          <div class="question-num" style="color:${qColors[colorIdx].border}">${q.emoji} Pregunta ${q.num}</div>
+          <div class="question-text">${q.text}</div>
+          <div class="options">${optionsHTML}</div>
+          <div class="error-select" id="err-${q.num}">Elige una opción para continuar ✨</div>
+        </div>
+      </div>`;
+
+    div.dataset.colorIdx = colorIdx;
+    div.dataset.qNum = q.num;
+    container.appendChild(div);
+
+    // Set colorIdx on the card AFTER appending (innerHTML resets dataset)
+    document.getElementById('card-' + q.num) && 
+      (document.getElementById('card-' + q.num).dataset.colorIdx = colorIdx);
+  });
+}
+
+function navigate(dir) {
+  // Validate current step before moving forward
+  if (dir === 1) {
+    if (currentStep === 0) {
+      const nombre = document.getElementById('field-nombre').value.trim();
+      const correo = document.getElementById('field-correo').value.trim();
+      const whatsapp = document.getElementById('field-whatsapp').value.trim();
+      if (!nombre || !correo || !whatsapp) {
+        document.getElementById('errorDatos').style.display = 'block';
+        return;
+      }
+      document.getElementById('errorDatos').style.display = 'none';
+    }
+
+    if (currentStep >= 2) {
+      const qNum = currentStep - 1;
+      if (!answers[qNum]) {
+        document.getElementById('err-' + qNum).style.display = 'block';
+        return;
+      }
+      document.getElementById('err-' + qNum).style.display = 'none';
+    }
+  }
+
+  // Last question → show results
+  if (dir === 1 && currentStep === TOTAL_STEPS - 1) {
+    showResults();
+    return;
+  }
+
+  // Hide current
+  document.getElementById('step-' + currentStep).classList.remove('active');
+  currentStep += dir;
+  document.getElementById('step-' + currentStep).classList.add('active');
+
+  updateNavButtons();
+  updateProgressBar();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateNavButtons() {
+  const btnPrev = document.getElementById('btnPrev');
+  const btnNext = document.getElementById('btnNext');
+  const counter = document.getElementById('stepCounter');
+
+  btnPrev.style.visibility = currentStep === 0 ? 'hidden' : 'visible';
+
+  const isLastQ = currentStep === TOTAL_STEPS - 1;
+  if (isLastQ) {
+    btnNext.textContent = '🏆 Ver mi perfil elemental';
+    btnNext.classList.add('finish');
+  } else {
+    btnNext.textContent = 'Siguiente →';
+    btnNext.classList.remove('finish');
+  }
+
+  if (currentStep >= 2) {
+    const qNum = currentStep - 1;
+    counter.textContent = `Pregunta ${qNum} de 20`;
+  } else if (currentStep === 1) {
+    counter.textContent = 'Instrucciones';
+  } else {
+    counter.textContent = '';
+  }
+}
+
+function launchConfetti() {
+  const colors = ['#E2ED80', '#FFD4A8', '#ABE6E0', '#D4B8E0', '#ffffff', '#f0c0f0'];
+  const count = 120;
+  for (let i = 0; i < count; i++) {
+    setTimeout(() => {
+      const piece = document.createElement('div');
+      piece.className = 'confetti-piece';
+      piece.style.left = Math.random() * 100 + 'vw';
+      piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+      piece.style.width = (Math.random() * 8 + 6) + 'px';
+      piece.style.height = (Math.random() * 8 + 6) + 'px';
+      piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+      const duration = Math.random() * 2 + 2;
+      piece.style.animationDuration = duration + 's';
+      piece.style.animationDelay = '0s';
+      document.body.appendChild(piece);
+      setTimeout(() => piece.remove(), duration * 1000 + 100);
+    }, i * 18);
+  }
+}
+
+function updateProgressBar() {
+  const pct = currentStep === 0 ? 0 : ((currentStep - 1) / 21) * 100;
+  document.getElementById('progressBar').style.width = pct + '%';
+}
+
+
+// Color palette per question (cycling through 4 element colors)
+const qColors = [
+  { border: '#E2ED80', bg: '#1a1f0a', letterBg: '#E2ED80', letterColor: '#1a1a1a' }, // lima
+  { border: '#FFD4A8', bg: '#2a1e0e', letterBg: '#FFD4A8', letterColor: '#1a1a1a' }, // fuego
+  { border: '#ABE6E0', bg: '#0a1e1c', letterBg: '#ABE6E0', letterColor: '#1a1a1a' }, // agua
+  { border: '#D4B8E0', bg: '#1a1225', letterBg: '#D4B8E0', letterColor: '#1a1a1a' }, // aire
+];
+
+// buildQuestions replaced by buildQuestionSteps
+
+// Color palette already defined above
+
+function selectOption(qNum, letter) {
+  const card = document.getElementById(`card-${qNum}`);
+  const colorIdx = parseInt(card.getAttribute('data-color-idx'));
+  const color = qColors[colorIdx];
+
+  // Deselect all options for this question
+  questions[qNum - 1].options.forEach(opt => {
+    const el = document.getElementById(`opt-${qNum}-${opt.letter}`);
+    if (el) {
+      el.classList.remove('selected');
+      el.style.borderColor = '';
+      el.style.background = '';
+      el.querySelector('.option-letter').style.background = '';
+      el.querySelector('.option-letter').style.borderColor = '';
+      el.querySelector('.option-letter').style.color = '';
+    }
+  });
+
+  // Select chosen with question-specific color
+  const chosen = document.getElementById(`opt-${qNum}-${letter}`);
+  if (chosen) {
+    chosen.classList.add('selected');
+    chosen.style.borderColor = color.border;
+    chosen.style.background = color.bg;
+    const letterEl = chosen.querySelector('.option-letter');
+    letterEl.style.background = color.letterBg;
+    letterEl.style.borderColor = color.border;
+    letterEl.style.color = color.letterColor;
+  }
+
+  // Mark card answered with color accent
+  card.classList.add('answered');
+  card.style.borderColor = color.border;
+
+  answers[qNum] = letter;
+  updateProgress();
+}
+
+function hoverOption(qNum, letter, entering) {
+  const el = document.getElementById(`opt-${qNum}-${letter}`);
+  if (!el) return;
+
+  // Don't override if already selected
+  if (el.classList.contains('selected')) return;
+
+  const colorIdx = parseInt(document.getElementById(`card-${qNum}`).getAttribute('data-color-idx'));
+  const color = qColors[colorIdx];
+  const letterEl = el.querySelector('.option-letter');
+
+  if (entering) {
+    el.style.borderColor = color.border;
+    el.style.background = color.bg;
+    letterEl.style.borderColor = color.border;
+  } else {
+    el.style.borderColor = '';
+    el.style.background = '';
+    letterEl.style.borderColor = '';
+  }
+}
+
+function updateProgress() {
+  const count = Object.keys(answers).length;
+  document.getElementById('answeredCount').textContent = count;
+  document.getElementById('progressBar').style.width = (count / 20 * 100) + '%';
+  document.getElementById('submitBtn').disabled = count < 20;
+}
+
+function showResults() {
+  const nombre = document.getElementById('field-nombre').value.trim();
+  const correo = document.getElementById('field-correo').value.trim();
+  const prefijo = document.getElementById('field-prefijo').value.trim();
+  const whatsapp = prefijo + ' ' + document.getElementById('field-whatsapp').value.trim();
+
+  // Count scores
+  const scores = { A: 0, B: 0, C: 0, D: 0 };
+  Object.values(answers).forEach(v => scores[v]++);
+
+  const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+  const dominant = sorted[0][0];
+  const desarrollo = sorted[sorted.length - 1][0];
+
+  // Build scores grid
+  const scoresGrid = document.getElementById('scoresGrid');
+  const order = ['A', 'C', 'D', 'B'];
+  const elementKeys = { A: 'fuego', B: 'tierra', C: 'agua', D: 'aire' };
+
+  order.forEach(key => {
+    const prof = profiles[key];
+    const score = scores[key];
+    const pct = (score / 20) * 100;
+    const isDom = key === dominant;
+    const isDes = key === desarrollo;
+
+    const card = document.createElement('div');
+    card.className = `score-card ${prof.cls}${isDom ? ' dominant' : ''}`;
+    card.innerHTML = `
+      <div class="score-badge">${isDom ? '✦ Dominante' : isDes ? '◌ Desarrollo' : 'Presente'}</div>
+      <div class="score-emoji">${prof.emoji}</div>
+      <div class="score-element">${prof.name}</div>
+      <div class="score-bar-wrap"><div class="score-bar" style="width:0%" data-pct="${pct}"></div></div>
+      <div class="score-num">${score}</div>
+      <div class="score-label">de 20 puntos</div>
+      ${isDom ? '<span class="dominant-tag">Tu elemento</span>' : ''}
+      ${isDes ? '<span class="desarrollo-tag">Zona de desarrollo</span>' : ''}
+    `;
+    scoresGrid.appendChild(card);
+  });
+
+  // Build profile result
+  const domProfile = profiles[dominant];
+  const desProfile = profiles[desarrollo];
+  const desDesc = domProfile.desarrolloDesc[desarrollo] || '';
+  document.getElementById('profileResult').innerHTML = `
+    <h3>Tu perfil elemental es</h3>
+    <div class="profile-name">${domProfile.emoji} ${domProfile.name}</div>
+    <div class="profile-tagline">${domProfile.tagline}</div>
+    <div class="profile-fields">
+      <div class="profile-field">
+        <div class="field-label">Elemento dominante</div>
+        <div class="field-value">${domProfile.emoji} ${domProfile.name}</div>
+      </div>
+      <div class="profile-field">
+        <div class="field-label">Zona de desarrollo</div>
+        <div class="field-value">${desProfile.emoji} ${desProfile.name}</div>
+      </div>
+    </div>
+    <div class="profile-desc-box" style="margin-top:24px; text-align:left;">
+      <div class="profile-desc-section">
+        <div class="profile-desc-label">✨ Tu elemento dominante</div>
+        <p class="profile-desc-text">${domProfile.dominantDesc}</p>
+      </div>
+      <div class="profile-desc-section" style="margin-top:20px;">
+        <div class="profile-desc-label">🌱 Tu zona de desarrollo — ${desProfile.emoji} ${desProfile.name}</div>
+        <p class="profile-desc-text">${desDesc}</p>
+      </div>
+    </div>
+  `;
+
+  // Show results
+  document.getElementById('testForm').style.display = 'none';
+  document.getElementById('results').style.display = 'block';
+  document.getElementById('result-nombre').textContent = nombre;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  launchConfetti();
+
+  // Send results to Google Sheets
+  const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyWGq-x17KLXoqT42zQUWZwO_AdHbAqyle2MVSH31cvqVUfAt6gB9gs8zWVAgk3v9uHOw/exec';
+  fetch(SHEETS_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      nombre: nombre,
+      correo: correo,
+      whatsapp: whatsapp,
+      dominante: profiles[dominant].name,
+      desarrollo: profiles[desarrollo].name,
+      fuego: scores['A'],
+      tierra: scores['B'],
+      agua: scores['C'],
+      aire: scores['D']
+    })
+  }).catch(err => console.log('Sheets error:', err));
+
+  // Animate bars
+  setTimeout(() => {
+    document.querySelectorAll('.score-bar').forEach(bar => {
+      bar.style.width = bar.dataset.pct + '%';
+    });
+  }, 300);
+}
+
+function restart() {
+  answers = {};
+  document.getElementById('scoresGrid').innerHTML = '';
+  document.getElementById('profileResult').innerHTML = '';
+  document.getElementById('part1').innerHTML = '';
+  document.getElementById('part2').innerHTML = '';
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('testForm').style.display = 'block';
+  document.getElementById('progressBar').style.width = '0%';
+  document.getElementById('answeredCount').textContent = '0';
+  document.getElementById('submitBtn').disabled = true;
+  document.getElementById('field-nombre').value = '';
+  document.getElementById('field-correo').value = '';
+  document.getElementById('field-whatsapp').value = '';
+  document.getElementById('field-prefijo').selectedIndex = 0;
+  document.getElementById('errorDatos').style.display = 'none';
+  buildQuestionSteps();
+updateNavButtons();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+buildQuestionSteps();
+updateNavButtons();
+</script>
+</body>
+</html>
