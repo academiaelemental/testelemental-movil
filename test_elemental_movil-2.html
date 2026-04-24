@@ -1874,6 +1874,14 @@ function updateProgressBar() {
   }
 }
 
+// Color palette per question (cycling through 4 element colors)
+const qColors = [
+  { border: '#E2ED80', bg: '#1a1f0a', letterBg: '#E2ED80', letterColor: '#1a1a1a' }, // lima
+  { border: '#FFD4A8', bg: '#2a1e0e', letterBg: '#FFD4A8', letterColor: '#1a1a1a' }, // fuego
+  { border: '#ABE6E0', bg: '#0a1e1c', letterBg: '#ABE6E0', letterColor: '#1a1a1a' }, // agua
+  { border: '#D4B8E0', bg: '#1a1225', letterBg: '#D4B8E0', letterColor: '#1a1a1a' }, // aire
+];
+
 function updateDots() {
   const container = document.getElementById('dotsProgress');
   if (!container) return;
@@ -1887,15 +1895,6 @@ function updateDots() {
     container.appendChild(dot);
   }
 }
-
-
-// Color palette per question (cycling through 4 element colors)
-const qColors = [
-  { border: '#E2ED80', bg: '#1a1f0a', letterBg: '#E2ED80', letterColor: '#1a1a1a' }, // lima
-  { border: '#FFD4A8', bg: '#2a1e0e', letterBg: '#FFD4A8', letterColor: '#1a1a1a' }, // fuego
-  { border: '#ABE6E0', bg: '#0a1e1c', letterBg: '#ABE6E0', letterColor: '#1a1a1a' }, // agua
-  { border: '#D4B8E0', bg: '#1a1225', letterBg: '#D4B8E0', letterColor: '#1a1a1a' }, // aire
-];
 
 
 // ── SOUND ENGINE ─────────────────────────────────────────────────────────────
